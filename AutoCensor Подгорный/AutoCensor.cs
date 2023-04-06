@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -37,7 +38,25 @@ namespace Лабораторная_ГДиК_AutoCensor_Подгорный
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            if(PathToFile == null || PathToFile.Length == 0) return;
+            if(PathToFile == null || PathToFile.Length == 0)
+            {
+                MessageBox.Show("Поле содержащие путь к файлу содержит не корректный путь к файлу или пустое!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if(LotsWordsTextBox.Text.Length == 0)
+            {
+                MessageBox.Show("Поле с набором слов пустное!\nДобавьте слова для замены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if(
+                PathToEndFile.Length == 0 &&
+                MessageBox.Show("Путь к результирующему файлу не задан, файл будет создан в том-же месте где и заданный файл\nВас это устраивает?", 
+                "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No
+                )
+                return;
+
 
             try
             {

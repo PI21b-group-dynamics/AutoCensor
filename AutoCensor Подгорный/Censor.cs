@@ -49,14 +49,28 @@ namespace Лабораторная_ГДиК_AutoCensor_Подгорный
 
             Logs = new List<string>();
 
+            CountReplace = 0;
+
+            CensorOperation(Path_to_File, Path_to_EndFile);
+
+            if(Logs.Count == 0)
+            {
+                return new List<string>() { "Данный файл не содержит слова из заданного списка." };
+            }
+
+            return Logs;
+        }
+
+        private void CensorOperation(string Path_to_File, string Path_to_EndFile)
+        {
             string[] LeftData = Regex.Replace(Path_to_File, @"\\", @"\").Split('\\');
 
             string OutputFileName = "";
 
-            if(Path_to_EndFile != null)
+            if (Path_to_EndFile != null)
             {
                 OutputFileName = Path_to_EndFile + "Censor_" + LeftData[LeftData.Length - 1];
-            } 
+            }
             else
             {
                 for (int i = 0; i < LeftData.Length - 1; i++)
@@ -65,8 +79,8 @@ namespace Лабораторная_ГДиК_AutoCensor_Подгорный
                 }
                 OutputFileName += "Censor_" + LeftData[LeftData.Length - 1];
             }
- 
-            int PositionLine = CountReplace = 0;
+
+            int PositionLine = 0;
 
             using (var sr = new StreamReader(Path_to_File))
             {
@@ -77,7 +91,7 @@ namespace Лабораторная_ГДиК_AutoCensor_Подгорный
                 {
                     PositionLine++;
 
-                    foreach(string dataReplacment in ForReplacement)
+                    foreach (string dataReplacment in ForReplacement)
                     {
                         if (Regex.IsMatch(datastr, dataReplacment))
                         {
@@ -104,8 +118,6 @@ namespace Лабораторная_ГДиК_AutoCensor_Подгорный
                     }
                 }
             }
-
-            return Logs;
         }
 
     }
